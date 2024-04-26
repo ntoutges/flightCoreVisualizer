@@ -1,0 +1,611 @@
+@font-face {
+  font-family: "Terminal";
+  src: url(CourierPrime-Regular.ttf);
+}
+
+.framework-widget {
+  position: absolute;
+  
+  /* default styling */
+  left: 0px;
+  top: 0px;
+
+  transform-origin: top left;
+
+  user-select: none; /* set this as the default for widgets */
+}
+
+.framework-widget.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.framework-widget:has(> .framework-draggable-widget-containers) {
+  pointer-events: none;
+}
+
+.framework-draggable-widget-containers.framework-widgets-hide-on-inactive > .framework-draggable-widget-headers {
+  opacity: 0.1;
+}
+
+.framework-draggable-widget-containers.framework-widgets-hide-on-inactive:has(> .framework-draggable-widget-headers:not(:hover)) > .framework-draggable-widget-bodies:not(:hover) {
+  background: transparent !important;
+  /* box-shadow: none; */
+}
+
+.framework-draggable-widget-containers.framework-widgets-hide-on-inactive > .framework-draggable-widget-headers:hover {
+  opacity: 1;
+}
+
+.framework-draggable-widget-containers.framework-widgets-hide-on-inactive:has(> .framework-draggable-widget-bodies:hover) > .framework-draggable-widget-headers {
+  opacity: 0.5 !important;
+}
+
+/* .framework-grid-widget:not(.no-cursor):hover {
+  cursor: grab;
+} */
+
+.framework-grid-widget.dragging:hover {
+  cursor: move;
+}
+
+
+.framework-block-widget {
+  min-width: 50px;
+  min-height: 50px;
+  background: black;
+}
+
+
+.framework-draggable-widget-containers {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.framework-draggable-widget-containers:not(.no-cursor) > .framework-draggable-widget-headers > .framework-draggable-widget-titles:hover,
+.framework-draggable-widget-containers:not(.no-cursor) > .framework-draggable-widget-headers > .framework-draggable-widget-title-ends:hover {
+  cursor: grab;
+}
+
+.framework-draggable-widget-containers:not(.no-cursor) > .framework-draggable-widget-headers.dragging > .framework-draggable-widget-titles:hover,
+.framework-draggable-widget-containers:not(.no-cursor) > .framework-draggable-widget-headers.dragging > .framework-draggable-widget-title-ends:hover {
+  cursor: grabbing;
+}
+
+.framework-draggable-widget-headers {
+  position: relative;
+  margin-bottom: -4px;
+
+  filter: drop-shadow(0px 0px 1px black);
+
+  white-space: nowrap;
+
+  transition: transform 150ms, filter 150ms, opacity 150ms;
+  transform-origin: 0 0;
+  opacity: 1;
+}
+
+.framework-draggable-widget-headers:hover {
+  z-index: 1; /* ensure header is in front of everything */
+}
+
+.framework-draggable-widget-headers.draggable-widget-close {
+  transform: scaleX(0);
+  filter: drop-shadow(0px 0px 1px black) brightness(0);
+  opacity: 0.5;
+}
+
+.framework-draggable-widget-containers.draggable-widget-headerless > .framework-draggable-widget-headers {
+  display: none;
+}
+
+.framework-draggable-widget-titles {
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background-color: grey;
+
+  display: inline-block;
+  padding: 5px 5px 6px 5px;
+  /* max-width: calc(100% - 10px); */
+
+  font-size: 11px;
+
+  /* height: 100%; */
+
+  transition: padding-right 100ms, border-radius 200ms;
+  transition-delay: 0ms, 0ms;
+
+  border-radius: 0px;
+  font-family: 'Terminal';
+
+  pointer-events: all;
+}
+
+.framework-draggable-widget-title-texts {
+  font-weight: normal;
+  margin: 0px;
+  padding: 0px;
+  font-size: 1em;
+  font-family: inherit;
+}
+
+.framework-draggable-widget-containers:has(> .framework-draggable-widget-bodies.draggable-widget-minimize) > .framework-draggable-widget-headers > .framework-draggable-widget-titles {
+  border-bottom-right-radius: 15px;
+  border-top-right-radius: 15px;
+  transition-delay: 0ms, 100ms;
+}
+
+.framework-draggable-widget-headers > .framework-draggable-widget-title-ends {
+  color: transparent;
+  background-color: grey;
+  display: inline-block;
+  
+  height: calc(100% - 4px);
+  aspect-ratio: 5 / 4;
+  position: absolute;
+
+  transform: translateX(-1px); /* Fill horrible gap */
+  transform-origin: 0 100%;
+
+  clip-path: polygon(0 0, 2px 0, 100% 100%, 0% 100%);
+  margin-bottom: -4px; /* remove strange gap between bottom of inline-block element and the parent */
+
+  transition: transform 200ms, clip-path 200ms 200ms;
+  transition-delay: 100ms, 100ms;
+
+  pointer-events: all;
+}
+
+.framework-draggable-widget-containers:has(> .framework-draggable-widget-bodies.draggable-widget-minimize) > .framework-draggable-widget-headers > .framework-draggable-widget-title-ends {
+  transform: translateX(-1px) scaleX(0);
+  transition-delay: 0ms;
+}
+
+@keyframes minimize-bodies-forward {
+  0% {
+    transform: unset;
+    display: block;
+  }
+  50% {
+    transform: scaleX(0.05);
+    filter: brightness(0);
+    opacity: 0.5;
+  }
+  99% {
+    transform: scale(0.05);
+    display: block;
+    filter: brightness(0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes minimize-bodies-reverse {
+  0% {
+    visibility: visible;
+    transform: scaleY(0.05);
+    width: 0px;
+    transform-origin: 100% 0%;
+    filter: brightness(0);
+    opacity: 0.5;
+  }
+  50% {
+    width: 100%;
+    transform: scaleY(0.05);
+    
+  }
+  100% {
+    transform-origin: 100% 0%;
+    transform: unset;
+  }
+}
+
+.framework-draggable-widget-bodies {
+  /* padding: 20px; */
+  background: linear-gradient(315deg, #fffde1, #dddab1);
+  visibility: visible;
+  transform-origin: 0 0;
+
+  animation: minimize-bodies-reverse 300ms;
+
+  flex-grow: 1;
+  position: relative;
+
+  box-shadow: 0px 0px 1px black;
+  min-height: 0px; /* default flex-child cannot be smaller than content; this overrides that */
+  /* overflow: hidden; */
+
+  pointer-events: all;
+}
+.framework-draggable-widget-bodies.draggable-widget-minimize {
+  animation: minimize-bodies-forward 300ms;
+}
+
+.framework-draggable-widget-button-holder {
+  position: absolute;
+  top: 50%;
+  right: 0px;
+  transform: translate(100%, -50%);
+
+  transition: transform 100ms, right 100ms;
+
+  display: flex;
+  gap: 2px;
+}
+
+.framework-draggable-widget-titles.show-buttons > .framework-draggable-widget-button-holder,
+.framework-draggable-widget-containers:has(> .framework-draggable-widget-bodies.draggable-widget-minimize) > .framework-draggable-widget-headers .framework-draggable-widget-button-holder {
+  transform: translateY(-50%);
+  right: 5px;
+}
+
+.framework-widget.is-minimized {
+  width: min-content !important;
+  height: unset !important;
+}
+
+.framework-scene-holders-widget:has(> .framework-draggable-widget-containers:is(.draggable-widget-fullscreen, .draggable-widget-fullscreen-exit)),
+.framework-widget:has(> .framework-draggable-widget-containers:is(.draggable-widget-fullscreen, .draggable-widget-fullscreen-exit)) {
+  transition: top 200ms, left 200ms, width 200ms, height 200ms, transform 200ms;
+}
+
+.framework-scene-holders-widget:has(> .framework-draggable-widget-containers.draggable-widget-fullscreen),
+.framework-widget:has(> .framework-draggable-widget-containers.draggable-widget-fullscreen) { /* TODO: see if this fix works! */
+  top: 0px !important;
+  left: 0px !important;
+  width: 100% !important;
+  height: 100% !important;
+
+  transform: none !important;
+  z-index: 100000 !important;
+}
+
+
+.framework-draggable-widget-containers.draggable-widget-fullscreen {
+  & > .framework-draggable-widget-headers {
+    position: absolute;
+    z-index: 1;
+    top: 0px;
+    left: 0px;
+
+    & > .framework-draggable-widget-title-ends {
+      clip-path: polygon(0 0, 100% 0, 2px 100%, 0 100%);
+    }
+  }
+
+  & > .framework-draggable-widget-bodies {
+    width: unset !important;
+    height: unset !important;
+
+    & > .framework-addon-containers {
+      display: none;
+    }
+  }
+}
+
+.framework-draggable-widget-button-holder > .framework-draggable-widget-buttons:hover {
+  cursor: pointer;
+}
+
+.framework-draggable-widget-buttons {
+  border-radius: 50%;
+  display: inline-block;
+
+  position: relative;
+  vertical-align: middle;
+}
+
+.framework-draggable-widget-buttons > svg {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.framework-draggable-widget-buttons:not(.framework-draggable-widget-button-alts) {
+  &> svg.framework-header-buttons-alt {
+    display: none;
+  }
+}
+
+.framework-draggable-widget-buttons.framework-draggable-widget-button-alts:has(> svg.framework-header-buttons-alt) {
+  &> svg.framework-header-buttons-main {
+    display: none;
+  }
+}
+
+.draggable-widget-minimize {
+  display: none;
+}
+
+@keyframes contextmenu-enter {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.framework-resize-drag-container {
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+
+  z-index: 1;
+
+  &:has(> .framework-resize-drag-element-side-left:hover) > .framework-resize-drag-element-side-left,
+  &:has(> .framework-resize-drag-element-side-right:hover) > .framework-resize-drag-element-side-right,
+  &:has(> .framework-resize-drag-element-side-top:hover) > .framework-resize-drag-element-side-top,
+  &:has(> .framework-resize-drag-element-side-bottom:hover) > .framework-resize-drag-element-side-bottom {
+    opacity: 1;
+  }
+}
+
+.framework-widget:has(> .framework-draggable-widget-containers > .framework-draggable-widget-bodies.draggable-widget-minimize) > .framework-resize-drag-element,
+.framework-scene-holders-widget:has(> .framework-draggable-widget-containers.draggable-widget-fullscreen) > .framework-resize-drag-element {
+  display: none;
+}
+
+.framework-resize-drag-element {
+  background: #7bbbff;
+  opacity: 0;
+  pointer-events: all;
+  position: absolute;
+
+  transition: opacity 100ms;
+
+  --resize-width: 3px;
+
+  pointer-events: all;
+
+  &.framework-resize-drag-element-side-left {
+    left: 0px;
+    translate: -100% 0;
+  }
+  
+  &.framework-resize-drag-element-side-right {
+    right: 0px;
+    translate: 100% 0;
+  }
+
+  &.framework-resize-drag-element-side-top {
+    top: 0px;
+    translate: 0 -100%;
+  }
+
+  &.framework-resize-drag-element-side-bottom {
+    bottom: 0px;
+    translate: 0 100%;
+  }
+  
+  &.framework-resize-drag-element-side-right,
+  &.framework-resize-drag-element-side-left {
+    top: var(--resize-width);
+    height: calc(100% - 2 * var(--resize-width));
+    width: var(--resize-width);
+
+    &:hover {
+      cursor: ew-resize;
+    }
+  }
+  
+  &.framework-resize-drag-element-side-top,
+  &.framework-resize-drag-element-side-bottom {
+    left: var(--resize-width);
+    width: calc(100% - 2 * var(--resize-width));
+    height: var(--resize-width);
+
+    &:hover {
+      cursor: ns-resize;
+    }
+  }
+
+  &.framework-resize-drag-element-side-top.framework-resize-drag-element-side-left {
+    left: calc(-1 * var(--resize-width));
+    top: calc(-1 * var(--resize-width));
+  }
+  &.framework-resize-drag-element-side-bottom.framework-resize-drag-element-side-left {
+    top: unset;
+    left: calc(-1 * var(--resize-width));
+    bottom: calc(-1 * var(--resize-width));
+  }
+  &.framework-resize-drag-element-side-top.framework-resize-drag-element-side-right {
+    left: unset;
+    right: calc(-1 * var(--resize-width));
+    top: calc(-1 * var(--resize-width));
+  }
+  &.framework-resize-drag-element-side-bottom.framework-resize-drag-element-side-right {
+    top: unset;
+    left: unset;
+    right: calc(-1 * var(--resize-width));
+    bottom: calc(-1 * var(--resize-width));
+
+    &:hover {
+      cursor: nwse-resize;
+    }
+  }
+
+  &.framework-resize-drag-element-side-top.framework-resize-drag-element-side-left,
+  &.framework-resize-drag-element-side-top.framework-resize-drag-element-side-right,
+  &.framework-resize-drag-element-side-bottom.framework-resize-drag-element-side-left,
+  &.framework-resize-drag-element-side-bottom.framework-resize-drag-element-side-right {
+    width: calc(2 * var(--resize-width));
+    height: calc(2 * var(--resize-width));
+    translate: 0 0;
+  }
+
+  &.framework-resize-drag-element-side-bottom.framework-resize-drag-element-side-right:hover,
+  &.framework-resize-drag-element-side-top.framework-resize-drag-element-side-left:hover {
+    cursor: nwse-resize;
+  }
+
+  &.framework-resize-drag-element-side-bottom.framework-resize-drag-element-side-left:hover,
+  &.framework-resize-drag-element-side-top.framework-resize-drag-element-side-right:hover {
+    cursor: nesw-resize;
+  }
+}
+
+/* .framework-resize-drag-element > svg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.framework-resize-drag-element:hover {
+  border-color: black;
+  opacity: 1;
+  width: 15px;
+  height: 15px;
+} */
+
+.framework-resize-drag-element.framework-dir-both:hover {
+  cursor: nwse-resize;
+}
+
+.framework-resize-drag-element.framework-dir-horizontal:hover {
+  cursor: ew-resize;
+}
+
+.framework-resize-drag-element.framework-dir-vertical:hover {
+  cursor: ns-resize;
+}
+
+
+.framework-contextmenu-containers {
+  background-color: white;
+  border: solid 1px grey;
+
+  font-size: 11px;
+  font-family: 'Courier New', Courier, monospace;
+
+  box-shadow: 2px 2px 3px black;
+  
+  display: grid;
+  grid-template-columns: min-content auto min-content;
+  padding: 2px;
+
+  transform-origin: 0 0;
+  animation: contextmenu-enter 100ms;
+}
+
+.framework-contextmenu-containers:empty {
+  display: none;
+}
+
+.framework-contextmenu-sections {
+  display: contents;
+}
+
+.framework-contextmenu-items {
+  display: contents;
+}
+
+.framework-contextmenu-items > :not(.framework-contextmenu-icons) {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.framework-contextmenu-items > :first-child {
+  padding-left: 5px;
+  padding-right: 10px;
+}
+
+.framework-contextmenu-items > :last-child {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.framework-contextmenu-shortcuts {
+  color: grey;
+}
+
+.framework-contextmenu-icons > svg {
+  height: 0.8em;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.framework-contextmenu-names:not(:empty) + .framework-contextmenu-shortcuts:not(:empty) {
+  padding-left: 5px;
+}
+
+.framework-contextmenu-shortcuts:not(:empty):has(+ :not(:empty)) {
+  padding-right: 5px;
+}
+
+.framework-contextmenu-items.framework-contextmenu-item-disabled > div {
+  opacity: 0.5;
+}
+
+.framework-contextmenu-items:has(> :hover):not(.framework-contextmenu-item-disabled) > div {
+  background-color: #d3d3d3;
+}
+
+.framework-contextmenu-section-separators {
+  grid-column: 1 / 4;
+}
+
+.framework-contextmenu-section-separators:empty {
+  height: 1px;
+  background-color: #c5c5c5;
+  margin-bottom: 4px;
+  margin-top: 4px;
+}
+
+.framework-contextmenu-section-separators:not(:empty) {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+.framework-contextmenu-section-separator-lines {
+  flex-grow: 1;
+  height: 1px;
+  background-color: #c5c5c5;
+
+  position: relative;
+  top: calc(50% - 1px);
+
+  min-width: 5px;
+}
+
+.framework-contextmenu-section-separator-names {
+  padding-right: 4px;
+  padding-left: 4px;
+  color: #636363;
+}
+
+.framework-contextmenu-sections:first-child > .framework-contextmenu-section-separators:empty {
+  display: none;
+}
+
+.framework-line-wire-widget > .framework-wire-body {
+  /* height: 2px; */
+  /* background: black; */
+
+  transform-origin: 0% 50%;
+  position: relative;
+  /* box-shadow: white 0px 0px 2px; */
+}
+
+.framework-basic-wire-widget {
+  pointer-events: none;
+  position: absolute;
+}
+
+.framework-basic-wire-widget:not(.framework-wire-is-editing) > .framework-wire-body:not(.framework-wire-body-pointerless) {
+  pointer-events: all;
+}

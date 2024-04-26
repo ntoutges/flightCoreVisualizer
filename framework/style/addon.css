@@ -1,0 +1,97 @@
+.framework-addon-containers {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+
+  top: 0px;
+  left: 0px;
+
+  z-index: 100;
+}
+
+.framework-addon-edge-horizontals {
+  width: 100%;
+  height: 0px;
+  position: absolute;
+
+  display: flex;
+  flex-direction: row;
+}
+
+
+.framework-addons {
+  position: absolute;
+  translate: -50% -50%;
+  /* background-color: black; */
+  pointer-events: all;
+  overflow: hidden;
+
+  left: 0px; /* default */
+  transition: left 100ms linear;
+
+  &:not(.addon-edge-aliases).addons-side-rotated {
+    rotate: -90deg;
+  }
+}
+
+.framework-addon-edges {
+  position: absolute;
+
+  /* use the following for debugging */
+  /* height: 10px;
+  background: orange; */
+}
+
+.framework-addon-edges-left {
+  left: 0px;
+  transform: rotate(90deg);
+  transform-origin: 0 0;
+}
+
+.framework-addon-edges-right {
+  right: 0px;
+  transform: rotate(90deg) translateX(100%);
+  transform-origin: 100% 0;
+}
+
+.framework-addon-edges-top {
+  top: 0px;
+}
+
+.framework-addon-edges-bottom {
+  bottom: 0px;
+}
+
+
+.framework-addon-connectors {
+  border-radius: 50%;
+  aspect-ratio: 1;
+
+  border: solid black 3px;
+}
+
+.framework-addon-connectors:hover,
+.framework-addon-connectors.selected {
+  cursor: pointer;
+  background: grey !important;
+}
+
+
+.addon-edge-aliases {
+  border-radius: 0px;
+  overflow: visible;
+  height: 0px;
+  
+  /* background: red !important; */
+  &> .addon-edge-alias-contents {
+    display: flex;
+    flex-direction: row;
+    height: 0px;
+
+    &> .framework-addons {
+      position: relative;
+      translate: 0% -50%;
+    }
+  }
+}

@@ -1,0 +1,103 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0px;
+  padding: 0px;
+  background-color: cornsilk;
+}
+
+
+.box-connection-contents {
+  width: 200px;
+  padding: 5px 10px;
+  background: lightgrey !important;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.conn-button:hover {
+  cursor: pointer;
+}
+
+.conn-status {
+  text-align: center;
+  padding: 5px;
+  background: #ffcfcf;
+  color: #953131;
+
+  &:empty {
+    display: none;
+  }
+
+  font-size: 12px;
+}
+
+.conn-ports {
+  padding: 5px;
+  background: #bef9be;
+  color: darkgreen;
+
+  &:empty {
+    display: none;
+  }
+
+  &::before {
+    content: 'Id: 0x';
+  }
+}
+
+.conn-input-controls {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.conn-baud {
+  min-width: 0px;
+}
+
+.var-viewer-content {
+  min-width: 150px;
+  min-height: 20px;
+  background: lightgrey;
+  padding: 5px 10px;
+}
+
+.variable {
+  display: contents;
+}
+
+.var-viewer-content {
+  display: grid;
+  grid-template-columns: auto min-content auto;
+}
+
+.var-query-content {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 2px;
+  padding: 5px 10px 5px 5px;
+
+  > label {
+    display: contents;
+  }
+}
+
+.framework-draggable-widget-bodies {
+  background: lightgrey !important;
+}
+
+.fs-terminal-content {
+  /* display: contents; */
+  height: 100%;
+  width: calc(100% - 20px);
+  padding: 0px 10px;
+  background: black;
+}
+
+.box-view-content {
+  width: 100%;
+  height: 100%;
+}

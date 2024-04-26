@@ -1,0 +1,76 @@
+.framework-prefab-connection-containers {
+  padding: 5px 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.framework-prefab-connection-statuses {
+  text-align: center;
+  background: #ffcfcf;
+  color: #8f0000;
+  padding: 2px 0px;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.framework-prefab-connsole-containers {
+  padding: 5px 10px;
+  height: calc(100% - 10px);
+
+  background: black;
+  color: white;
+  font-family: 'Terminal';
+
+  display: flex;
+  flex-direction: column;
+
+  font-size: 12px;
+
+  overflow-y: auto;
+
+  &:hover {
+    cursor: text;
+  }
+}
+
+.framework-prefab-connsole-bodies {
+  color: inherit;
+  font-family: inherit;
+
+  /* flex: 1 1 0; */
+
+  font-size: inherit;
+
+  &> * {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+
+    &:hover {
+      background: #0a410a;
+      cursor: pointer;
+    }
+
+    &:empty::after {
+      content: ' ';
+    }
+  }
+}
+
+.framework-prefab-connsole-inputs {
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  border: none;
+  padding: 0px;
+  margin: 0px;
+
+  font-size: inherit;
+}
+
+.framework-prefab-connsole-inputs:focus {
+  outline: none;
+}
